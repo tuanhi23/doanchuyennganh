@@ -10,7 +10,7 @@ const SignOutButton = () => {
 
   const { mutate, isLoading } = useMutation(usersApi.logout, {
     onSuccess: async () => {
-      setUserData(null, null);
+      setUserData("", "");
       await queryClient.invalidateQueries("validateToken");
 
       showToast({ message: "Đăng xuất thành công!", type: "SUCCESS" });
@@ -32,10 +32,9 @@ const SignOutButton = () => {
       className={`
         px-4 py-2 rounded-lg font-semibold 
         transition duration-200
-        ${
-          isLoading
-            ? "text-gray-400 cursor-not-allowed"
-            : "hover:text-red-500 text-white"
+        ${isLoading
+          ? "text-gray-400 cursor-not-allowed"
+          : "hover:text-red-500 text-white"
         }
       `}
     >
