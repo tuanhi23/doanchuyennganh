@@ -39,6 +39,13 @@ import AdminOrdersPage from "./pages/adminOrders/adminOrderPage";
 import AdminOrderForm from "./pages/adminOrders/adminOrderForm";
 import AdminUsersPage from "./pages/adminUser/adminUserPage";
 import AdminUserForm from "./pages/adminUser/adminUserForm";
+import AdminAuthorsPage from "./pages/adminAuthors/adminAuthorPage";
+import AdminAuthorForm from "./pages/adminAuthors/adminAuthorForm";
+import AdminPublishersPage from "./pages/adminPublishers/adminPublisherPage";
+import AdminPublisherForm from "./pages/adminPublishers/adminPublisherForm";
+import AdminReviewsPage from "./pages/adminReviews/adminReviewPage";
+import AdminReviewForm from "./pages/adminReviews/adminReviewForm";
+import AdminSettings from "./pages/adminSettings/adminSettings";
 import Checkout from "./pages/cart/checkOut";
 
 const App = () => {
@@ -139,6 +146,19 @@ const App = () => {
             <Route path="users" element={<AdminUsersPage />} />
             <Route path="users/create" element={<AdminUserForm />} />
             <Route path="users/:id" element={<AdminUserForm />} />
+
+            <Route path="authors" element={<AdminAuthorsPage />} />
+            <Route path="authors/create" element={<AdminAuthorForm />} />
+            <Route path="authors/:id" element={<AdminAuthorForm />} />
+
+            <Route path="publishers" element={<AdminPublishersPage />} />
+            <Route path="publishers/create" element={<AdminPublisherForm />} />
+            <Route path="publishers/:id" element={<AdminPublisherForm />} />
+
+            <Route path="reviews" element={<AdminReviewsPage />} />
+            <Route path="reviews/:id" element={<AdminReviewForm />} />
+
+            <Route path="settings" element={<AdminSettings />} />
           </Route>
         </Route>
 

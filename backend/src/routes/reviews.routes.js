@@ -9,8 +9,15 @@ router.get("/", async (req, res) => {
   res.json(await Reviews.getAll());
 });
 
+// Must be before /:id to avoid route conflict
 router.get("/book/:id", async (req, res) => {
   res.json(await Reviews.getByBook(req.params.id));
+});
+
+router.get("/:id", async (req, res) => {
+  const review = await Reviews.getById(req.params.id);
+  if (!review) return res.status(404).json({ message: "Review not found" });
+  res.json(review);
 });
 
 // User

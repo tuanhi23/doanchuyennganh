@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { categoriesApi } from "../../services/categories.service";
 import { authorsApi } from "../../services/authors.service";
 import { publishersApi } from "../../services/publishers.service";
+import { bookCategoriesApi } from "../../services/book_categories.service";
+import { bookAuthorsApi } from "../../services/book_authors.service";
 import { useQuery } from "react-query";
 
 type BookForm = {
@@ -11,12 +13,11 @@ type BookForm = {
     description?: string | null;
     price: number;
     stock_quantity: number;
-    category_id: string;
-    author_id: string;
+    category_ids: string[];
+    author_ids: string[];
     publisher_id: string;
     published_date?: string | null;
     language?: string | null;
-    // cover_image?: string;
     cover_image?: File | null;
 };
 
@@ -26,33 +27,64 @@ const BookModal = ({ isOpen, onClose, initialData, onSubmit }: any) => {
         useForm<BookForm>();
 
     const [preview, setPreview] = useState<string | null>(null);
+    const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
+    const [selectedAuthorIds, setSelectedAuthorIds] = useState<string[]>([]);
 
     // Dropdown data
     const { data: categories } = useQuery(["categories"], categoriesApi.getAll);
     const { data: authors } = useQuery(["authors"], authorsApi.getAll);
     const { data: publishers } = useQuery(["publishers"], publishersApi.getAll);
 
+    // Load existing categories and authors when editing
+    const { data: existingCategories } = useQuery(
+        ["book-categories", initialData?.book_id],
+        () => bookCategoriesApi.getByBook(initialData?.book_id),
+        { enabled: !!initialData?.book_id }
+    );
+
+    const { data: existingAuthors } = useQuery(
+        ["book-authors", initialData?.book_id],
+        () => bookAuthorsApi.getByBook(initialData?.book_id),
+        { enabled: !!initialData?.book_id }
+    );
+
     // Reset form when open
     useEffect(() => {
         if (isOpen) {
-            reset(
-                initialData || {
-                    title: "",
-                    description: "",
-                    price: 0,
-                    stock_quantity: 0,
-                    category_id: "",
-                    author_id: "",
-                    publisher_id: "",
-                    published_date: "",
-                    language: "",
-                    cover_image: "",
-                }
-            );
+            const defaultData = {
+                title: "",
+                description: "",
+                price: 0,
+                stock_quantity: 0,
+                category_ids: [],
+                author_ids: [],
+                publisher_id: "",
+                published_date: "",
+                language: "",
+                cover_image: null,
+            };
 
-            setPreview(initialData?.cover_image || null);
+            if (initialData) {
+                // Load existing relationships
+                const catIds = existingCategories?.map((c: any) => c.category_id) || [];
+                const authIds = existingAuthors?.map((a: any) => a.author_id) || [];
+                
+                reset({
+                    ...initialData,
+                    category_ids: catIds,
+                    author_ids: authIds,
+                });
+                setSelectedCategoryIds(catIds);
+                setSelectedAuthorIds(authIds);
+                setPreview(initialData?.cover_image || null);
+            } else {
+                reset(defaultData);
+                setSelectedCategoryIds([]);
+                setSelectedAuthorIds([]);
+                setPreview(null);
+            }
         }
-    }, [isOpen, initialData, reset]);
+    }, [isOpen, initialData, reset, existingCategories, existingAuthors]);
 
     // Handle image upload preview
     const handleImageSelect = (e: any) => {
@@ -61,6 +93,24 @@ const BookModal = ({ isOpen, onClose, initialData, onSubmit }: any) => {
             setValue("cover_image", file);
             setPreview(URL.createObjectURL(file));
         }
+    };
+
+    // Handle category selection
+    const handleCategoryToggle = (categoryId: string) => {
+        const newIds = selectedCategoryIds.includes(categoryId)
+            ? selectedCategoryIds.filter(id => id !== categoryId)
+            : [...selectedCategoryIds, categoryId];
+        setSelectedCategoryIds(newIds);
+        setValue("category_ids", newIds);
+    };
+
+    // Handle author selection
+    const handleAuthorToggle = (authorId: string) => {
+        const newIds = selectedAuthorIds.includes(authorId)
+            ? selectedAuthorIds.filter(id => id !== authorId)
+            : [...selectedAuthorIds, authorId];
+        setSelectedAuthorIds(newIds);
+        setValue("author_ids", newIds);
     };
 
     if (!isOpen) return null;
@@ -100,30 +150,72 @@ const BookModal = ({ isOpen, onClose, initialData, onSubmit }: any) => {
                             />
                         </div>
 
-                        {/* CATEGORY */}
-                        <div>
-                            <label className="font-semibold text-sm">Danh mục *</label>
-                            <select {...register("category_id")} className="w-full p-2 border rounded-lg">
-                                <option value="">-- Chọn --</option>
-                                {categories?.map((c: any) => (
-                                    <option key={c.category_id} value={c.category_id}>
-                                        {c.name}
-                                    </option>
-                                ))}
-                            </select>
+                        {/* CATEGORIES - Multiple Selection */}
+                        <div className="col-span-2">
+                            <label className="font-semibold text-sm mb-2 block">
+                                Danh mục * (có thể chọn nhiều)
+                            </label>
+                            <div className="border rounded-lg p-3 max-h-40 overflow-y-auto bg-gray-50">
+                                {categories && categories.length > 0 ? (
+                                    <div className="space-y-2">
+                                        {categories.map((c: any) => (
+                                            <label
+                                                key={c.category_id}
+                                                className="flex items-center gap-2 cursor-pointer hover:bg-white p-2 rounded"
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedCategoryIds.includes(c.category_id)}
+                                                    onChange={() => handleCategoryToggle(c.category_id)}
+                                                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                                />
+                                                <span className="text-sm">{c.name}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <p className="text-sm text-gray-500">Chưa có danh mục nào</p>
+                                )}
+                            </div>
+                            {selectedCategoryIds.length > 0 && (
+                                <p className="text-xs text-gray-600 mt-1">
+                                    Đã chọn {selectedCategoryIds.length} danh mục
+                                </p>
+                            )}
                         </div>
 
-                        {/* AUTHOR */}
-                        <div>
-                            <label className="font-semibold text-sm">Tác giả *</label>
-                            <select {...register("author_id")} className="w-full p-2 border rounded-lg">
-                                <option value="">-- Chọn --</option>
-                                {authors?.map((a: any) => (
-                                    <option key={a.author_id} value={a.author_id}>
-                                        {a.name}
-                                    </option>
-                                ))}
-                            </select>
+                        {/* AUTHORS - Multiple Selection */}
+                        <div className="col-span-2">
+                            <label className="font-semibold text-sm mb-2 block">
+                                Tác giả * (có thể chọn nhiều)
+                            </label>
+                            <div className="border rounded-lg p-3 max-h-40 overflow-y-auto bg-gray-50">
+                                {authors && authors.length > 0 ? (
+                                    <div className="space-y-2">
+                                        {authors.map((a: any) => (
+                                            <label
+                                                key={a.author_id}
+                                                className="flex items-center gap-2 cursor-pointer hover:bg-white p-2 rounded"
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedAuthorIds.includes(a.author_id)}
+                                                    onChange={() => handleAuthorToggle(a.author_id)}
+                                                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                                />
+                                                <span className="text-sm">{a.name}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <p className="text-sm text-gray-500">Chưa có tác giả nào</p>
+                                )}
+                            </div>
+                            {selectedAuthorIds.length > 0 && (
+                                <p className="text-xs text-gray-600 mt-1">
+                                    Đã chọn {selectedAuthorIds.length} tác giả
+                                </p>
+                            )}
                         </div>
 
                         {/* PUBLISHER */}

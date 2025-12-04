@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Search } from "lucide-react";
+import SignOutButton from "../components/SignOutButton";
 
 interface Props {
   title: any;
@@ -21,13 +22,20 @@ export default function AdminTopbar({ title }: Props) {
           />
         </div>
 
-        {/* Avatar */}
-        <div className="flex items-center gap-2 cursor-pointer">
-          <img
-            src="https://ui-avatars.com/api/?name=Admin"
-            alt="avatar"
-            className="w-9 h-9 rounded-full border"
-          />
+        {/* Avatar & Sign Out */}
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <img
+              src="https://ui-avatars.com/api/?name=Admin"
+              alt="avatar"
+              className="w-9 h-9 rounded-full border"
+            />
+          </div>
+          <div className="border-l border-gray-200 pl-3">
+            <div className="[&>button]:text-gray-700 [&>button]:hover:text-red-600 [&>button]:hover:bg-red-50 [&>button]:px-3 [&>button]:py-1.5 [&>button]:text-sm">
+              <SignOutButton />
+            </div>
+          </div>
         </div>
       </div>
     </header>

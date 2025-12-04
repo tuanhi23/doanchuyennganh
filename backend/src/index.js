@@ -57,6 +57,6 @@ app.post("/upload-image", upload.single("image"), async (req, res) => {
 // Serve local images
 app.use("/images", express.static(path.join(__dirname, "uploads")));
 
-app.listen(process.env.PORT || 5000, () => {
+app.listen(process.env.PORT || 4000, () => {
   console.log("Server running");
 });

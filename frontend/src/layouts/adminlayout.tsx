@@ -12,6 +12,9 @@ export default function AdminLayout() {
     if (pathname.includes("/admin/categories")) return "Quản lý danh mục";
     if (pathname.includes("/admin/products")) return "Quản lý sản phẩm";
     if (pathname.includes("/admin/variants")) return "Quản lý biến thể";
+    if (pathname.includes("/admin/publishers")) return "Quản lý nhà xuất bản";
+    if (pathname.includes("/admin/authors")) return "Quản lý tác giả";
+    if (pathname.includes("/admin/users")) return "Quản lý người dùng";
     if (pathname.includes("/admin/orders")) return "Quản lý đơn hàng";
     if (pathname.includes("/admin/customers")) return "Quản lý khách hàng";
     if (pathname.includes("/admin/reviews")) return "Quản lý đánh giá";

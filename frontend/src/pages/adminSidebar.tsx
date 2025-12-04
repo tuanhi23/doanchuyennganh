@@ -6,6 +6,7 @@ import {
   ShoppingCart,
   User,
   Settings,
+  Star,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -16,6 +17,9 @@ const menu = [
   { label: "Sản Phẩm", to: "/admin/books", icon: <Package size={20} /> },
   { label: "Danh mục", to: "/admin/categories", icon: <Package size={20} /> },
   { label: "Đơn hàng", to: "/admin/orders", icon: <ShoppingCart size={20} /> },
+  { label: "Nhà xuất bản", to: "/admin/publishers", icon: <Package size={20} /> },
+  { label: "Tác giả", to: "/admin/authors", icon: <Package size={20} /> },
+  { label: "Đánh giá", to: "/admin/reviews", icon: <Star size={20} /> },
   { label: "Người dùng", to: "/admin/users", icon: <User size={20} /> },
   { label: "Cài đặt", to: "/admin/settings", icon: <Settings size={20} /> },
 ];
@@ -51,10 +55,9 @@ export default function AdminSidebar({ collapsed, onToggle }: SidebarProps) {
             to={item.to}
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-3 text-sm font-medium
-              ${
-                isActive
-                  ? "bg-blue-50 text-blue-600 border-r-4 border-blue-500"
-                  : "text-gray-700"
+              ${isActive
+                ? "bg-blue-50 text-blue-600 border-r-4 border-blue-500"
+                : "text-gray-700"
               }
               hover:bg-gray-100`
             }

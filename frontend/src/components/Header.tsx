@@ -52,18 +52,18 @@ const Header = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-40 bg-[#1f1e1c]/95 border-b border-[#3b2a1a] backdrop-blur">
+    <nav className="sticky top-0 z-40 bg-white border-b border-orange-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
         {/* LOGO */}
         <Link
           to="/"
-          className="text-[#c8a97e] text-2xl font-black tracking-wide uppercase"
+          className="text-orange-600 text-2xl font-black tracking-wide uppercase"
         >
           Bookstore
         </Link>
 
         {/* NAV */}
-        <ul className="hidden md:flex flex-1 justify-center items-center gap-6 text-sm font-medium text-[#f4ede4]">
+        <ul className="hidden md:flex flex-1 justify-center items-center gap-6 text-sm font-medium text-gray-800">
           {isLoggedIn && role === "user" && (
             <>
               {/* ✅ DROPDOWN CLICK */}
@@ -71,7 +71,7 @@ const Header = () => {
                 <button
                   type="button"
                   onClick={() => setOpenCat((p) => !p)}
-                  className="flex items-center gap-1 hover:text-[#c8a97e]"
+                  className="flex items-center gap-1 hover:text-orange-600"
                 >
                   Thể loại <AiOutlineDown size={12} />
                 </button>
@@ -82,7 +82,7 @@ const Header = () => {
                       <button
                         key={cat.category_id}
                         onClick={() => handleCategoryClick(cat.category_id)}
-                        className="w-full text-left px-4 py-2 text-sm text-[#f4ede4] hover:bg-[#c8a97e]/10 hover:text-[#c8a97e] transition"
+                        className="w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-orange-50 hover:text-orange-600 transition"
                       >
                         {cat.name}
                       </button>
@@ -115,16 +115,16 @@ const Header = () => {
           {!(isLoggedIn && role === "admin") && (
             <form
               onSubmit={handleSearch}
-              className="hidden sm:flex items-center bg-[#292826] border border-[#4a3a29] rounded-full px-3 py-1.5"
+              className="hidden sm:flex items-center bg-white border border-orange-300 rounded-full px-3 py-1.5 shadow-sm"
             >
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Tìm sách..."
-                className="bg-transparent text-xs md:text-sm text-[#f4ede4] placeholder:text-[#c8a97e]/50 outline-none w-32 md:w-44"
+                className="bg-transparent text-xs md:text-sm text-gray-800 placeholder:text-orange-400 outline-none w-32 md:w-44"
               />
-              <button type="submit" className="ml-1 text-[#c8a97e]">
+              <button type="submit" className="ml-1 text-orange-500 hover:text-orange-600">
                 <AiOutlineSearch size={18} />
               </button>
             </form>
@@ -135,7 +135,7 @@ const Header = () => {
           ) : (
             <Link
               to="/login"
-              className="text-sm font-medium bg-[#c8a97e] hover:bg-[#b48c66] text-[#2f2f2f] px-4 py-2 rounded-full"
+              className="text-sm font-medium bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full shadow-sm"
             >
               Đăng nhập
             </Link>

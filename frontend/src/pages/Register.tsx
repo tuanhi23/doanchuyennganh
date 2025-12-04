@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
-import * as apiClient from "../services/api-client";
 import { useAppContext } from "../contexts/AppContext";
 import { useNavigate } from "react-router-dom";
 import { usersApi } from "../services/users.service";
@@ -81,8 +80,15 @@ const Register = () => {
         <input
           type="email"
           className="border rounded w-full py-2 px-3 mt-1"
-          {...register("email", { required: "Không được bỏ trống" })}
+          {...register("email", { 
+            required: "Không được bỏ trống",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "Email không hợp lệ"
+            }
+          })}
         />
+        {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
       </label>
 
       <label className="text-sm font-medium">
@@ -90,8 +96,15 @@ const Register = () => {
         <input
           type="tel"
           className="border rounded w-full py-2 px-3 mt-1"
-          {...register("phone", { required: "Không được bỏ trống" })}
+          {...register("phone", { 
+            required: "Không được bỏ trống",
+            pattern: {
+              value: /^[0-9]{10,11}$/,
+              message: "Số điện thoại phải có 10-11 chữ số"
+            }
+          })}
         />
+        {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
       </label>
 
       <label className="text-sm font-medium">
@@ -104,6 +117,7 @@ const Register = () => {
             minLength: { value: 6, message: "Tối thiểu 6 ký tự" },
           })}
         />
+        {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
       </label>
 
       <label className="text-sm font-medium">
@@ -112,9 +126,11 @@ const Register = () => {
           type="password"
           className="border rounded w-full py-2 px-3 mt-1"
           {...register("confirmPassword", {
+            required: "Không được bỏ trống",
             validate: (val) => val === watch("password") || "Mật khẩu không trùng khớp",
           })}
         />
+        {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>}
       </label>
 
       <button

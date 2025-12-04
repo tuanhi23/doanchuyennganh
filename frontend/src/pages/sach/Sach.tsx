@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { booksApi } from "../../services/books.service";
+import { bookCategoriesApi } from "../../services/book_categories.service";
+import { bookAuthorsApi } from "../../services/book_authors.service";
 import BookModal from "./SachModal";
 
 const BooksPage: React.FC = () => {
@@ -39,16 +41,100 @@ const BooksPage: React.FC = () => {
     // SUBMIT
     const handleSubmit = async (data: any) => {
         try {
+            const { category_ids = [], author_ids = [], ...bookData } = data;
+
+            // Validation
+            if (!category_ids || category_ids.length === 0) {
+                alert("Vui lòng chọn ít nhất một danh mục!");
+                return;
+            }
+
+            if (!author_ids || author_ids.length === 0) {
+                alert("Vui lòng chọn ít nhất một tác giả!");
+                return;
+            }
+
+            let bookId: string;
+
             if (editData) {
-                await booksApi.update(editData.book_id, data);
+                // Update book
+                await booksApi.update(editData.book_id, bookData);
+                bookId = editData.book_id;
+
+                // Remove old relationships
+                try {
+                    const oldCategories = await bookCategoriesApi.getByBook(bookId);
+                    const oldAuthors = await bookAuthorsApi.getByBook(bookId);
+
+                    // Unlink old categories
+                    if (oldCategories && Array.isArray(oldCategories)) {
+                        for (const cat of oldCategories) {
+                            try {
+                                await bookCategoriesApi.unlink({
+                                    book_id: bookId,
+                                    category_id: cat.category_id,
+                                });
+                            } catch (e) {
+                                console.warn("Failed to unlink category:", e);
+                            }
+                        }
+                    }
+
+                    // Unlink old authors
+                    if (oldAuthors && Array.isArray(oldAuthors)) {
+                        for (const auth of oldAuthors) {
+                            try {
+                                await bookAuthorsApi.unlink({
+                                    book_id: bookId,
+                                    author_id: auth.author_id,
+                                });
+                            } catch (e) {
+                                console.warn("Failed to unlink author:", e);
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.warn("Failed to fetch old relationships:", e);
+                }
             } else {
-                await booksApi.create(data);
+                // Create book
+                const created = await booksApi.create(bookData);
+                bookId = created?.book_id || created?.id || created?.data?.book_id;
+                
+                if (!bookId) {
+                    throw new Error("Không thể lấy ID sách sau khi tạo");
+                }
+            }
+
+            // Link new categories
+            for (const categoryId of category_ids) {
+                try {
+                    await bookCategoriesApi.link({
+                        book_id: bookId,
+                        category_id: categoryId,
+                    });
+                } catch (e) {
+                    console.warn(`Failed to link category ${categoryId}:`, e);
+                }
+            }
+
+            // Link new authors
+            for (const authorId of author_ids) {
+                try {
+                    await bookAuthorsApi.link({
+                        book_id: bookId,
+                        author_id: authorId,
+                    });
+                } catch (e) {
+                    console.warn(`Failed to link author ${authorId}:`, e);
+                }
             }
 
             setIsModalOpen(false);
             queryClient.invalidateQueries(["fetchBooks"]);
-        } catch (e) {
+        } catch (e: any) {
             console.error("SAVE ERROR:", e);
+            alert(e?.message || "Có lỗi xảy ra khi lưu sách. Vui lòng thử lại.");
         }
     };
 
