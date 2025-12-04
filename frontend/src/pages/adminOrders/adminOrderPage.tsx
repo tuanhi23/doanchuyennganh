@@ -44,10 +44,12 @@ const AdminOrdersPage = () => {
           <tbody>
             {orders.map((o: any) => (
               <tr key={o.order_id}>
-                <td className="border p-2 text-black">{o.order_id}</td>
-                <td className="border p-2 text-black">{o.customer_id}</td>
+                <td className="border p-2 text-black">{o.order_id.slice(0, 8)}...</td>
+                <td className="border p-2 text-black">
+                  {o.customer_name || o.customer_id}
+                </td>
                 <td className="border p-2 text-right text-black">
-                  {Number(o.total_amount).toLocaleString("vi-VN")} ₫
+                  {parseFloat(o.total_amount || 0).toLocaleString("vi-VN")} ₫
                 </td>
                 <td className="border p-2 text-black">{o.payment_method}</td>
                 <td className="border p-2">

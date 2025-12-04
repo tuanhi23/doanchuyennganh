@@ -2,7 +2,12 @@ const db = require("../config/db");
 
 const Orders = {
   getAll: async () => {
-    const [rows] = await db.execute("SELECT * FROM orders");
+    const [rows] = await db.execute(`
+      SELECT o.*, c.name as customer_name, c.email as customer_email
+      FROM orders o
+      LEFT JOIN customers c ON o.customer_id = c.customer_id
+      ORDER BY o.order_date DESC
+    `);
     return rows;
   },
 

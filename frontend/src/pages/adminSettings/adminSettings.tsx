@@ -50,7 +50,7 @@ const AdminSettings = () => {
 
   // Calculate total orders value
   const totalOrdersValue = orders.reduce(
-    (sum: number, order: any) => sum + (order.total_amount || 0),
+    (sum: number, order: any) => sum + parseFloat(order.total_amount || 0),
     0
   );
 
@@ -178,13 +178,13 @@ const AdminSettings = () => {
               <div className="flex justify-between items-center">
                 <span className="text-black">Tổng giá trị kho:</span>
                 <span className="text-xl font-bold text-black">
-                  {totalStockValue.toLocaleString()}₫
+                  {parseFloat(totalStockValue.toString()).toLocaleString("vi-VN")}₫
                 </span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-black">Tổng giá trị đơn hàng:</span>
                 <span className="text-xl font-bold text-black">
-                  {totalOrdersValue.toLocaleString()}₫
+                  {parseFloat(totalOrdersValue.toString()).toLocaleString("vi-VN")}₫
                 </span>
               </div>
             </div>

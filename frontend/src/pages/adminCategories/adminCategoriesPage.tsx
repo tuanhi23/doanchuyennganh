@@ -27,7 +27,7 @@ const AdminCategoriesPage = () => {
         <h2 className="font-bold text-lg text-black">Quản lý danh mục</h2>
         <Link
           to="/admin/categories/create"
-          className="bg-blue-600 text-white px-4 py-2 rounded text-sm"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm"
         >
           Thêm danh mục
         </Link>
@@ -53,7 +53,7 @@ const AdminCategoriesPage = () => {
                   <div className="flex justify-center gap-2">
                     <Link
                       to={`/admin/categories/${c.category_id}`}
-                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-xs"
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-xs"
                     >
                       Sửa
                     </Link>
