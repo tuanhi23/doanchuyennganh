@@ -3,16 +3,15 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
-require("dotenv").config();
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
 const { upload, uploadToCloudinary } = require("./middleware/upload");
 const db = require("./config/db");
-
 const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:5175",
+    origin: ["http://localhost:5175", "http://tuannhan.shop", "https://tuannhan.shop"],
     credentials: true,
   })
 );

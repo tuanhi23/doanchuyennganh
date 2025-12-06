@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ordersApi } from "../../services/orders.service";
+// import { ordersApi } from "../../services/orders.service";
 import { usersApi } from "../../services/users.service";
 import { booksApi } from "../../services/books.service";
 import { useAppContext } from "../../contexts/AppContext";
@@ -25,8 +25,8 @@ const MyCart: React.FC = () => {
   const navigate = useNavigate();
 
   const [cart, setCart] = useState<CartItemFull[]>([]);
-  const [paymentMethod, setPaymentMethod] = useState("money");
-  const [userData, setUserData] = useState<any>(null);
+  // const [paymentMethod, ] = useState("money");
+  const [, setUserData] = useState<any>(null);
 
   // --------------------------
   // LOAD CART + MERGE PRODUCT INFO
@@ -120,35 +120,35 @@ const MyCart: React.FC = () => {
   // --------------------------
   // CHECKOUT
   // --------------------------
-  const handleCheckout = async () => {
-    if (!userData?.address) {
-      alert("Vui lòng cung cấp địa chỉ giao hàng");
-      return;
-    }
+  // const handleCheckout = async () => {
+  //   if (!userData?.address) {
+  //     alert("Vui lòng cung cấp địa chỉ giao hàng");
+  //     return;
+  //   }
 
-    if (cart.length === 0) {
-      alert("Giỏ hàng trống!");
-      return;
-    }
+  //   if (cart.length === 0) {
+  //     alert("Giỏ hàng trống!");
+  //     return;
+  //   }
 
-    const orderData = {
-      customer_id: userId,
-      orderDate: new Date().toISOString(),
-      totalAmount: getTotalPrice(),
-      orderStatus: "pending",
-      shippingAddress: userData.address,
-      paymentMethod,
-      products: JSON.stringify(cart),
-    };
+  //   const orderData = {
+  //     customer_id: userId,
+  //     orderDate: new Date().toISOString(),
+  //     totalAmount: getTotalPrice(),
+  //     orderStatus: "pending",
+  //     shippingAddress: userData.address,
+  //     paymentMethod,
+  //     products: JSON.stringify(cart),
+  //   };
 
-    try {
-      await ordersApi.create(orderData);
-      alert("Đặt hàng thành công!");
-      clearCart();
-    } catch {
-      alert("Thanh toán thất bại");
-    }
-  };
+  //   try {
+  //     await ordersApi.create(orderData);
+  //     alert("Đặt hàng thành công!");
+  //     clearCart();
+  //   } catch {
+  //     alert("Thanh toán thất bại");
+  //   }
+  // };
 
   // --------------------------
   // UI

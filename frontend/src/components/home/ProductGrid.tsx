@@ -1,11 +1,5 @@
 import ProductCard from "./ProductCard";
-
-interface Book {
-  book_id: string;
-  title: string;
-  price: number;
-  cover_image: string;
-}
+import { Book } from "../../types";
 
 interface ProductGridProps {
   books: Book[];

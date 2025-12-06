@@ -1,14 +1,13 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-import * as apiClient from "../services/api-client"; // Đảm bảo apiClient có method searchProducts
 
 const SearchPage = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const query = searchParams.get("query"); // Lấy giá trị query từ URL
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [results, ] = useState([]);
+  const [loading, ] = useState(true);
+  const [error, ] = useState(null);
 
   useEffect(
     () => {

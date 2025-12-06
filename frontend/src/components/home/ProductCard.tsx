@@ -1,11 +1,6 @@
 import { AiOutlineHeart, AiFillHeart, AiOutlineStar } from "react-icons/ai";
+import { Book } from "../../types";
 
-interface Book {
-  book_id: string;
-  title: string;
-  price: number;
-  cover_image: string;
-}
 
 interface ProductCardProps {
   book: Book;

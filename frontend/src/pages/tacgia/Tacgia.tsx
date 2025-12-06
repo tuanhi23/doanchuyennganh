@@ -11,7 +11,7 @@ const AuthorsPage: React.FC = () => {
     const [editData, setEditData] = useState<any>(null);
 
     // FETCH
-    const { data: authors, isLoading, isError } = useQuery(
+    const { data: authors, isLoading } = useQuery(
         ["fetchAuthors"],
         authorsApi.getAll
     );

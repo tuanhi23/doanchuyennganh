@@ -1,12 +1,7 @@
 import ProductCard from "./ProductCard";
 import SectionHeader from "./SectionHeader";
+import { Book } from "../../types";
 
-interface Book {
-  book_id: string;
-  title: string;
-  price: number;
-  cover_image: string;
-}
 
 interface HorizontalProductListProps {
   title: string;

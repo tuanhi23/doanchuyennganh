@@ -15,18 +15,7 @@ import MyCart from "./pages/cart/MyCart";
 import BookDetail from "./pages/BookDetail";
 import CategoryBooks from "./components/CategoriesBook";
 import UserBooksPage from "./pages/BooksPage";
-
-// ADMIN PAGES
-// import BooksPage from "./pages/books/BooksPage";
-// import PublishersPage from "./pages/publishers/PublishersPage";
-// import OrdersAdminPage from "./pages/orders/OrdersAdminPage";
-
-// USER PAGES
 import UserOrdersPage from "./pages/donhang/mydonhang";
-import PublishersPage from "./pages/nhaxuatban/Nhaxuatban";
-import AuthorsPage from "./pages/tacgia/Tacgia";
-import Danhmuc from "./pages/danhmuc/Danhmuc";
-import BooksPage from "./pages/sach/Sach";
 
 // import RequireAdmin from "./components/RequireAdmin";
 import AdminLayout from "./layouts/adminlayout";

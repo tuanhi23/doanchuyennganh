@@ -86,21 +86,21 @@ const HomeAdmin: React.FC = () => {
     : 0;
 
   // Calculate average rating
-  const averageRating =
-    Array.isArray(reviews) && reviews.length > 0
-      ? (
-          reviews.reduce((sum: number, review: any) => sum + (review.rating || 0), 0) /
-          reviews.length
-        ).toFixed(1)
-      : 0;
+  // const averageRating =
+  //   Array.isArray(reviews) && reviews.length > 0
+  //     ? (
+  //         reviews.reduce((sum: number, review: any) => sum + (review.rating || 0), 0) /
+  //         reviews.length
+  //       ).toFixed(1)
+  //     : 0;
 
-  // Count users by role
-  const adminUsers = Array.isArray(users)
-    ? users.filter((u: any) => u.role === "admin").length
-    : 0;
-  const regularUsers = Array.isArray(users)
-    ? users.filter((u: any) => u.role === "user").length
-    : 0;
+  // // Count users by role
+  // const adminUsers = Array.isArray(users)
+  //   ? users.filter((u: any) => u.role === "admin").length
+  //   : 0;
+  // const regularUsers = Array.isArray(users)
+  //   ? users.filter((u: any) => u.role === "user").length
+  //   : 0;
 
   // Count orders by status
   const pendingOrders = Array.isArray(orders)

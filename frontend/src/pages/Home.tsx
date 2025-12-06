@@ -14,14 +14,7 @@ import HorizontalProductList from "../components/home/HorizontalProductList";
 import ProductGrid from "../components/home/ProductGrid";
 import SectionHeader from "../components/home/SectionHeader";
 import { AiOutlineBook } from "react-icons/ai";
-
-interface Book {
-  book_id: string;
-  title: string;
-  price: number;
-  description: string;
-  cover_image: string;
-}
+import { Book } from "../types";
 
 const Home: React.FC = () => {
   const { searchData } = useAppContext();

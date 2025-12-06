@@ -14,7 +14,7 @@ const PublishersPage: React.FC = () => {
     const [editData, setEditData] = useState<any>(null);
 
     // FETCH LIST
-    const { data: publishers, isLoading, isError } = useQuery(
+    const { data: publishers, isLoading } = useQuery(
         ["fetchPublishers"],
         publishersApi.getAll
     );

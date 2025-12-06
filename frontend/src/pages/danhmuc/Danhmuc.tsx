@@ -10,7 +10,7 @@ const Danhmuc: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editData, setEditData] = useState<any>(null);
 
-  const { data: categories, isLoading, isError } = useQuery(
+  const { data: categories, isLoading } = useQuery(
     ["fetchCategories"],
     categoriesApi.getAll
   );

@@ -273,8 +273,8 @@ const AdminSettings = () => {
                       <span
                         key={star}
                         className={
-                          star <= Math.round(parseFloat(averageRating))
-                            ? "text-yellow-400"
+                          star <= Math.round(parseFloat(String(averageRating)))
+                          ? "text-yellow-400"
                             : "text-gray-300"
                         }
                       >
